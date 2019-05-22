@@ -3,6 +3,7 @@ import cv2
 import tensorflow as tf
 import datetime
 import argparse
+from keras.models import load_model
 
 detection_graph, sess = detector_utils.load_inference_graph()
 
@@ -16,6 +17,9 @@ if __name__ == '__main__':
     parser.add_argument('-ht', '--height', dest='height', type=int, default=640, help='Height of the frames in the video stream.')
     parser.add_argument('-ds', '--display', dest='display', type=int, default=1, help='Display the detected images using OpenCV. This reduces FPS')
     args = parser.parse_args()
+
+    classifier = load_model('logesh_a2e.h5')
+    classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
     cap = cv2.VideoCapture(0)
 
@@ -36,7 +40,7 @@ if __name__ == '__main__':
             print("Error converting to RGB")
 
         boxes, scores = detector_utils.detect_objects(image_np, detection_graph, sess)
-        detector_utils.draw_box_on_image(num_hands_detect, args.score_thresh, scores, boxes, im_width, im_height, image_np)
+        new_image_np = detector_utils.draw_box_on_image(num_hands_detect, args.score_thresh, scores, boxes, im_width, im_height, image_np)
 
         num_frames += 1
         elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
@@ -44,7 +48,15 @@ if __name__ == '__main__':
 
         if (args.display > 0):
             cv2.imshow('Single-Threaded Detection', cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR))
+            try:
+                cv2.imshow("Mask", new_image_np)
+            except:
+                continue;
 
-            if cv2.waitKey(25) & 0xFF == ord('q'):
+            k=cv2.waitKey(25) & 0xFF
+            if k == ord('q'):
+                cap.release()
                 cv2.destroyAllWindows()
                 break
+            elif k == ord('p'):
+                detector_utils.keras_process_predict(classifier, new_image_np)

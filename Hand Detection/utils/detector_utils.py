@@ -7,7 +7,7 @@ from datetime import datetime
 import cv2
 from utils import label_map_util
 from collections import defaultdict
-
+from keras.preprocessing import image
 
 detection_graph = tf.Graph()
 sys.path.append("..")
@@ -40,8 +40,19 @@ def draw_box_on_image(num_hands_detect, score_thresh, scores, boxes, im_width, i
             #print(scores[i])
             (left, right, top, bottom) = (boxes[i][1] * im_width, boxes[i][3] * im_width, boxes[i][0] * im_height, boxes[i][2] * im_height)
             p1 = (int(left), int(top))
-            p2 = (int(right), int(bottom))
+            width = int(right) - int(left)
+            height = int(bottom) - int(top)
+
+            if width > height:
+                p2 = (int(left) + width, int(top) + width)
+                new_image_np = image_np[int(top):int(top) + width, int(left):int(left) + width]
+            else:
+                p2 = (int(left) + height, int(top) + height)
+                new_image_np = image_np[int(top):int(top) + height, int(left):int(left) + height]
+
             cv2.rectangle(image_np, p1, p2, (77, 255, 9), 3, 1)
+            new_image_np = cv2.resize(new_image_np, (200,200))
+            return new_image_np
 
 def draw_fps_on_image(fps, image_np):
     cv2.putText(image_np, fps, (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (77, 255, 9), 2)
@@ -57,6 +68,14 @@ def detect_objects(image_np, detection_graph, sess):
     image_np_expanded = np.expand_dims(image_np, axis=0)
     (boxes, scores, classes, num) = sess.run([detection_boxes, detection_scores, detection_classes, num_detections], feed_dict={image_tensor: image_np_expanded})
     return np.squeeze(boxes), np.squeeze(scores)
+
+def keras_process_predict(classifier, img):
+    img = cv2.resize(img, (200,200))
+    img = image.img_to_array(img)
+    img = np.expand_dims(img, axis=0)
+    img = np.vstack([img])
+    result = classifier.predict_classes(img)
+    print (result)
 
 class WebcamVideoStream:
     def __init__(self, src, width, height):
