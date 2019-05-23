@@ -52,6 +52,7 @@ def draw_box_on_image(num_hands_detect, score_thresh, scores, boxes, im_width, i
 
             cv2.rectangle(image_np, p1, p2, (77, 255, 9), 3, 1)
             new_image_np = cv2.resize(new_image_np, (200,200))
+            new_image_np = cv2.cvtColor(new_image_np, cv2.COLOR_BGR2RGB)
             return new_image_np
 
 def draw_fps_on_image(fps, image_np):
