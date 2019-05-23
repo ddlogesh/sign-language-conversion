@@ -19,11 +19,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     classifier = load_model('AEnew_cat.h5')
-<<<<<<< HEAD
     classifier.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
-=======
-    classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
->>>>>>> e157736d8a6f6b4c5fcc6189e205246cb027f96d
 
     cap = cv2.VideoCapture(0)
     
@@ -45,23 +41,8 @@ if __name__ == '__main__':
             elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
             fps = num_frames / elapsed_time
 
-<<<<<<< HEAD
             image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
             cv2.imshow('Single-Threaded Detection', image_np)
-=======
-        num_frames += 1
-        elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
-        fps = num_frames / elapsed_time
-
-        if (args.display > 0):
-            cv2.imshow('Single-Threaded Detection', cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR))
-           
-            try:
-                cv2.imshow("Mask", new_image_np)
-                
-            except:
-                continue;
->>>>>>> e157736d8a6f6b4c5fcc6189e205246cb027f96d
 
             k=cv2.waitKey(25) & 0xFF
             if k == ord('q'):
@@ -69,7 +50,6 @@ if __name__ == '__main__':
                 cv2.destroyAllWindows()
                 break
             elif k == ord('p'):
-<<<<<<< HEAD
                 detector_utils.keras_process_predict(classifier, new_image_np)
 
             try:
@@ -79,8 +59,3 @@ if __name__ == '__main__':
                 continue;
         except:
             continue
-=======
-                print('Classifying the image')
-                detector_utils.keras_process_predict(classifier, new_image_np)
-                
->>>>>>> e157736d8a6f6b4c5fcc6189e205246cb027f96d
