@@ -52,6 +52,7 @@ def draw_box_on_image(num_hands_detect, score_thresh, scores, boxes, im_width, i
 
             cv2.rectangle(image_np, p1, p2, (77, 255, 9), 3, 1)
             new_image_np = cv2.resize(new_image_np, (200,200))
+            new_image_np = cv2.cvtColor(new_image_np, cv2.COLOR_BGR2RGB)
             return new_image_np
 
 def draw_fps_on_image(fps, image_np):
@@ -70,7 +71,7 @@ def detect_objects(image_np, detection_graph, sess):
     return np.squeeze(boxes), np.squeeze(scores)
 
 def keras_process_predict(classifier, img):
-    img = cv2.resize(img, (200,200))
+    img = cv2.resize(img, (50,50))
     img = image.img_to_array(img)
     img = np.expand_dims(img, axis=0)
     img = np.vstack([img])

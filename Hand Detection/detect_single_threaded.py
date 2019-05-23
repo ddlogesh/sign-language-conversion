@@ -18,7 +18,7 @@ if __name__ == '__main__':
     parser.add_argument('-ds', '--display', dest='display', type=int, default=1, help='Display the detected images using OpenCV. This reduces FPS')
     args = parser.parse_args()
 
-    classifier = load_model('logesh_a2e.h5')
+    classifier = load_model('logesh_tan_a2e.h5')
     classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
     cap = cv2.VideoCapture(0)
@@ -53,7 +53,7 @@ if __name__ == '__main__':
             except:
                 continue;
 
-            k=cv2.waitKey(25) & 0xFF
+            k=cv2.waitKey(10) & 0xFF
             if k == ord('q'):
                 cap.release()
                 cv2.destroyAllWindows()
