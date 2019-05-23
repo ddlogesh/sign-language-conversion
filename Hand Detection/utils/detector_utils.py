@@ -40,10 +40,10 @@ def draw_box_on_image(num_hands_detect, score_thresh, scores, boxes, im_width, i
         if (scores[i] > score_thresh):
             (left, right, top, bottom) = (boxes[i][1] * im_width, boxes[i][3] * im_width, boxes[i][0] * im_height, boxes[i][2] * im_height)
             
-            left = int(left) - 50
-            right = int(right) + 50
-            top = int(top) - 50
-            bottom = int(bottom) + 50
+            #left = int(left) - 50
+            #right = int(right) + 50
+            #top = int(top) - 50
+            #bottom = int(bottom) + 50
 
             p1 = (int(left), int(top))
             width = int(right) - int(left)
