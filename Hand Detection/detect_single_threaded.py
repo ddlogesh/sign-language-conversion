@@ -18,11 +18,11 @@ if __name__ == '__main__':
     parser.add_argument('-ds', '--display', dest='display', type=int, default=1, help='Display the detected images using OpenCV. This reduces FPS')
     args = parser.parse_args()
 
-    classifier = load_model('logesh_a2e.h5')
+    classifier = load_model('AEnew_cat.h5')
     classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
     cap = cv2.VideoCapture(0)
-
+    
     start_time = datetime.datetime.now()
     num_frames = 0
     im_width, im_height = (cap.get(3), cap.get(4))
@@ -48,8 +48,10 @@ if __name__ == '__main__':
 
         if (args.display > 0):
             cv2.imshow('Single-Threaded Detection', cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR))
+           
             try:
                 cv2.imshow("Mask", new_image_np)
+                
             except:
                 continue;
 
@@ -59,4 +61,6 @@ if __name__ == '__main__':
                 cv2.destroyAllWindows()
                 break
             elif k == ord('p'):
+                print('Classifying the image')
                 detector_utils.keras_process_predict(classifier, new_image_np)
+                

@@ -70,7 +70,7 @@ def detect_objects(image_np, detection_graph, sess):
     return np.squeeze(boxes), np.squeeze(scores)
 
 def keras_process_predict(classifier, img):
-    img = cv2.resize(img, (200,200))
+    img = cv2.resize(img, (50,50))
     img = image.img_to_array(img)
     img = np.expand_dims(img, axis=0)
     img = np.vstack([img])
