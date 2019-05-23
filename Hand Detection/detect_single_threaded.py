@@ -1,8 +1,8 @@
-from utils import detector_utils as detector_utils
 import cv2
 import tensorflow as tf
 import datetime
 import argparse
+from utils import detector_utils as detector_utils
 from keras.models import load_model
 
 detection_graph, sess = detector_utils.load_inference_graph()
@@ -15,11 +15,11 @@ if __name__ == '__main__':
     parser.add_argument('-src', '--source', dest='video_source', default=0, help='Device index of the camera.')
     parser.add_argument('-wd', '--width', dest='width', type=int, default=480, help='Width of the frames in the video stream.')
     parser.add_argument('-ht', '--height', dest='height', type=int, default=640, help='Height of the frames in the video stream.')
-    parser.add_argument('-ds', '--display', dest='display', type=int, default=1, help='Display the detected images using OpenCV. This reduces FPS')
+    parser.add_argument('-ds', '--display', dest='display', type=int, default=0, help='Display the detected images using OpenCV. This reduces FPS')
     args = parser.parse_args()
 
-    classifier = load_model('logesh_tan_a2e.h5')
-    classifier.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    classifier = load_model('AEnew_cat.h5')
+    classifier.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
 
     cap = cv2.VideoCapture(0)
 
@@ -28,30 +28,21 @@ if __name__ == '__main__':
     im_width, im_height = (cap.get(3), cap.get(4))
     num_hands_detect = 1
 
-    cv2.namedWindow('Single-Threaded Detection', cv2.WINDOW_NORMAL)
-
     while True:
-        ret, image_np = cap.read()
-        image_np = cv2.flip(image_np, 1)
-        
-        try:
+        try:   
+            ret, image_np = cap.read()
+            image_np = cv2.flip(image_np, 1) 
             image_np = cv2.cvtColor(image_np, cv2.COLOR_BGR2RGB)
-        except:
-            print("Error converting to RGB")
+   
+            boxes, scores = detector_utils.detect_objects(image_np, detection_graph, sess)
+            new_image_np = detector_utils.draw_box_on_image(num_hands_detect, args.score_thresh, scores, boxes, im_width, im_height, image_np)
 
-        boxes, scores = detector_utils.detect_objects(image_np, detection_graph, sess)
-        new_image_np = detector_utils.draw_box_on_image(num_hands_detect, args.score_thresh, scores, boxes, im_width, im_height, image_np)
+            num_frames += 1
+            elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
+            fps = num_frames / elapsed_time
 
-        num_frames += 1
-        elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
-        fps = num_frames / elapsed_time
-
-        if (args.display > 0):
-            cv2.imshow('Single-Threaded Detection', cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR))
-            try:
-                cv2.imshow("Mask", new_image_np)
-            except:
-                continue;
+            image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
+            cv2.imshow('Single-Threaded Detection', image_np)
 
             k=cv2.waitKey(10) & 0xFF
             if k == ord('q'):
@@ -60,3 +51,11 @@ if __name__ == '__main__':
                 break
             elif k == ord('p'):
                 detector_utils.keras_process_predict(classifier, new_image_np)
+
+            try:
+                cv2.imshow("Mask", new_image_np)
+            except:
+                cv2.destroyWindow("Mask")
+                continue;
+        except:
+            continue
