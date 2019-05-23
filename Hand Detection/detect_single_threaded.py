@@ -18,7 +18,7 @@ if __name__ == '__main__':
     parser.add_argument('-ds', '--display', dest='display', type=int, default=0, help='Display the detected images using OpenCV. This reduces FPS')
     args = parser.parse_args()
 
-    classifier = load_model('AEnew_cat.h5')
+    classifier = load_model('logesh_f2j_20e_4l.h5')
     classifier.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
 
     cap = cv2.VideoCapture(0)
@@ -44,7 +44,7 @@ if __name__ == '__main__':
             image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
             cv2.imshow('Single-Threaded Detection', image_np)
 
-            k=cv2.waitKey(25) & 0xFF
+            k=cv2.waitKey(10) & 0xFF
             if k == ord('q'):
                 cap.release()
                 cv2.destroyAllWindows()

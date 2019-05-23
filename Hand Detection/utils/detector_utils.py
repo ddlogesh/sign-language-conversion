@@ -8,6 +8,7 @@ import cv2
 from utils import label_map_util
 from collections import defaultdict
 from keras.preprocessing import image
+from keras.utils import to_categorical
 
 detection_graph = tf.Graph()
 sys.path.append("..")
