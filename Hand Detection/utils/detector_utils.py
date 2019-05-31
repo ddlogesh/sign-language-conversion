@@ -40,10 +40,10 @@ def draw_box_on_image(num_hands_detect, score_thresh, scores, boxes, im_width, i
         if (scores[i] > score_thresh):
             (left, right, top, bottom) = (boxes[i][1] * im_width, boxes[i][3] * im_width, boxes[i][0] * im_height, boxes[i][2] * im_height)
             
-            #left = int(left) - 50
-            #right = int(right) + 50
-            #top = int(top) - 50
-            #bottom = int(bottom) + 50
+            left = int(left) - 30
+            right = int(right) + 30
+            top = int(top) - 10
+            bottom = int(bottom) + 10
 
             p1 = (int(left), int(top))
             width = int(right) - int(left)
@@ -81,8 +81,69 @@ def keras_process_predict(classifier, img):
     img = image.img_to_array(img)
     img = np.expand_dims(img, axis=0)
     img = np.vstack([img])
-    result = classifier.predict_classes(img)
-    print (result)
+    result_c = classifier.predict(img)
+    result = np.argmax(result_c,axis = 1) 
+    #print (result)
+    if(result==[0]):
+        print("Nothing")
+    elif(result==[1]):
+        print("A")
+    elif(result==[2]):
+        print("B")
+    elif(result==[3]):
+        print("C")
+    elif(result==[4]):
+        print("D")
+    elif(result==[5]):
+        print("E")
+    elif(result==[6]):
+        print("F")
+    elif(result==[7]):
+        print("G")
+    elif(result==[8]):
+        print("H")
+    elif(result==[9]):
+        print("I")
+    elif(result==[10]):
+        print("J")
+    elif(result==[11]):
+        print("K")
+    elif(result==[12]):
+        print("L")
+    elif(result==[13]):
+        print("M")
+    elif(result==[14]):
+        print("N")
+    elif(result==[15]):
+        print("O")
+    elif(result==[16]):
+        print("P")
+    elif(result==[17]):
+        print("Q")
+    elif(result==[18]):
+        print("R")
+    elif(result==[19]):
+        print("S")
+    elif(result==[20]):
+        print("T")
+    elif(result==[21]):
+        print("U")
+    elif(result==[22]):
+        print("V")
+    elif(result==[23]):
+        print("W")
+    elif(result==[24]):
+        print("X")
+    elif(result==[25]):
+        print("Y")
+    elif(result==[26]):
+        print("Z")
+    elif(result==[27]):
+        print("Del")
+    elif(result==[28]):
+        print("Space")
+    else:
+        print ("Sorry Unexpected failure!")
 
 class WebcamVideoStream:
     def __init__(self, src, width, height):

@@ -18,8 +18,7 @@ if __name__ == '__main__':
     parser.add_argument('-ds', '--display', dest='display', type=int, default=0, help='Display the detected images using OpenCV. This reduces FPS')
     args = parser.parse_args()
 
-    classifier = load_model('logesh_f2j_20e_4l.h5')
-    classifier.compile(optimizer='rmsprop', loss='categorical_crossentropy', metrics=['accuracy'])
+    classifier = load_model('trained_models/paul_a2z_50e_2l.h5')
 
     cap = cv2.VideoCapture(0)
     
