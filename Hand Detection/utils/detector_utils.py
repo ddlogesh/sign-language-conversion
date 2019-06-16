@@ -56,7 +56,7 @@ def draw_box_on_image(num_hands_detect, score_thresh, scores, boxes, im_width, i
                 p2 = (int(left) + height, int(top) + height)
                 new_image_np = image_np[int(top):int(top) + height, int(left):int(left) + height]
 
-            cv2.rectangle(image_np, p1, p2, (77, 255, 9), 3, 1)
+            #cv2.rectangle(image_np, p1, p2, (77, 255, 9), 3, 1)
             new_image_np = cv2.resize(new_image_np, (200,200))
             new_image_np = cv2.cvtColor(new_image_np, cv2.COLOR_BGR2RGB)
             return new_image_np
@@ -77,71 +77,72 @@ def detect_objects(image_np, detection_graph, sess):
     return np.squeeze(boxes), np.squeeze(scores)
 
 def keras_process_predict(classifier, img):
-    img = cv2.resize(img, (50,50))
+    img = cv2.resize(img, (100,100))
     img = image.img_to_array(img)
     img = np.expand_dims(img, axis=0)
     img = np.vstack([img])
     result_c = classifier.predict(img)
     result = np.argmax(result_c,axis = 1) 
+    
     #print (result)
+    # if(result==[0]):
+    #     print("Nothing")
     if(result==[0]):
-        print("Nothing")
-    elif(result==[1]):
         print("A")
-    elif(result==[2]):
+    elif(result==[1]):
         print("B")
-    elif(result==[3]):
+    elif(result==[2]):
         print("C")
-    elif(result==[4]):
+    elif(result==[3]):
         print("D")
-    elif(result==[5]):
+    elif(result==[4]):
         print("E")
-    elif(result==[6]):
-        print("F")
-    elif(result==[7]):
-        print("G")
-    elif(result==[8]):
-        print("H")
-    elif(result==[9]):
-        print("I")
-    elif(result==[10]):
-        print("J")
-    elif(result==[11]):
-        print("K")
-    elif(result==[12]):
-        print("L")
-    elif(result==[13]):
-        print("M")
-    elif(result==[14]):
-        print("N")
-    elif(result==[15]):
-        print("O")
-    elif(result==[16]):
-        print("P")
-    elif(result==[17]):
-        print("Q")
-    elif(result==[18]):
-        print("R")
-    elif(result==[19]):
-        print("S")
-    elif(result==[20]):
-        print("T")
-    elif(result==[21]):
-        print("U")
-    elif(result==[22]):
-        print("V")
-    elif(result==[23]):
-        print("W")
-    elif(result==[24]):
-        print("X")
-    elif(result==[25]):
-        print("Y")
-    elif(result==[26]):
-        print("Z")
-    elif(result==[27]):
-        print("Del")
-    elif(result==[28]):
-        print("Space")
+    # elif(result==[6]):
+    #     print("F")
+    # elif(result==[7]):
+    #     print("G")
+    # elif(result==[8]):
+    #     print("H")
+    # elif(result==[9]):
+    #     print("I")
+    # elif(result==[10]):
+    #     print("J")
+    # elif(result==[11]):
+    #     print("K")
+    # elif(result==[12]):
+    #     print("L")
+    # elif(result==[13]):
+    #     print("M")
+    # elif(result==[14]):
+    #     print("N")
+    # elif(result==[15]):
+    #     print("O")
+    # elif(result==[16]):
+    #     print("P")
+    # elif(result==[17]):
+    #     print("Q")
+    # elif(result==[18]):
+    #     print("R")
+    # elif(result==[19]):
+    #     print("S")
+    # elif(result==[20]):
+    #     print("T")
+    # elif(result==[21]):
+    #     print("U")
+    # elif(result==[22]):
+    #     print("V")
+    # elif(result==[23]):
+    #     print("W")
+    # elif(result==[24]):
+    #     print("X")
+    # elif(result==[25]):
+    #     print("Y")
+    # elif(result==[26]):
+    #     print("Z")
+    # elif(result==[27]):
+    #     print("Del")
+    # elif(result==[28]):
+    #     print("Space")
     else:
         print ("Sorry Unexpected failure!")
 
