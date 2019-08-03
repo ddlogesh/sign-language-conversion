@@ -9,6 +9,13 @@ from utils import label_map_util
 from collections import defaultdict
 from keras.preprocessing import image
 from keras.utils import to_categorical
+from watson_developer_cloud import VisualRecognitionV3
+
+
+visual_recognition = VisualRecognitionV3(
+    version='2018-03-19',
+    iam_apikey='SBtaTP0tMhL7JkZWvRHYSpxW5fQiSxFFIaaFGrhNpjF9'
+)
 
 detection_graph = tf.Graph()
 sys.path.append("..")
@@ -75,6 +82,19 @@ def detect_objects(image_np, detection_graph, sess):
     image_np_expanded = np.expand_dims(image_np, axis=0)
     (boxes, scores, classes, num) = sess.run([detection_boxes, detection_scores, detection_classes, num_detections], feed_dict={image_tensor: image_np_expanded})
     return np.squeeze(boxes), np.squeeze(scores)
+
+
+def watson_predict(path):
+    
+    visual_recognition = VisualRecognitionV3('2018-03-19',iam_apikey='SBtaTP0tMhL7JkZWvRHYSpxW5fQiSxFFIaaFGrhNpjF9')
+    
+    with open(path, 'rb') as images_file:
+        classes = visual_recognition.classify(images_file,threshold='0.5',classifier_ids='A2J_1734476288').get_result()
+    
+    var=classes["images"][0]["classifiers"][0]["classes"][0]["class"]
+    print("predicted class is ",var)
+
+
 
 def keras_process_predict(classifier, img):
     img = cv2.resize(img, (100,100))

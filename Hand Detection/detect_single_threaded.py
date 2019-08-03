@@ -70,6 +70,13 @@ if __name__ == '__main__':
                 break
             elif k == ord('p'):
                 detector_utils.keras_process_predict(classifier, new_image_np)
+            
+            elif k==ord('w'):
+                print("clicked on w")
+                cv2.imwrite('tempWatson.jpg',new_image_np)
+                detector_utils.watson_predict('tempWatson.jpg')
+                print("finished clicked on w")
+                
             elif k == ord('s'):
                 image = new_image_np
 
@@ -89,6 +96,8 @@ if __name__ == '__main__':
                 cv2.imwrite(path + 'img_'+str(count)+'_sp.jpg',image_aug)
            
                 print("clicked correctly")
+
+
             elif k == ord('t'):
                 image = new_image_np
 
