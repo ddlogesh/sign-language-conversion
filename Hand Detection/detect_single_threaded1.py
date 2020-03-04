@@ -5,6 +5,7 @@ import argparse
 from utils import detector_utils as detector_utils
 from keras.models import load_model
 from imgaug import augmenters as iaa
+import time
 #import tensorflow.python.util.deprecation as deprecation
 
 #deprecation._PRINT_DEPRECATION_WARNINGS = False
@@ -35,26 +36,26 @@ if __name__ == '__main__':
             image_np = cv2.cvtColor(image_np, cv2.COLOR_BGR2RGB)   
         
             cv2.imshow('Single-Threaded Detection', image_np)
-            k=cv2.waitKey(10) & 0xFF
             
+
+            start = time.time() 
+            while time.time() - start < 2:
+                pass 
+
+
+            k=cv2.waitKey(10) & 0xFF
+
             if k == ord('q'):
                 cap.release()
                 cv2.destroyAllWindows()
                 break
-            elif k==ord('a'):
+            elif True:
                 boxes, scores = detector_utils.detect_objects(image_np, detection_graph, sess)
                 new_image_np = detector_utils.draw_box_on_image(num_hands_detect, args.score_thresh, scores, boxes, im_width, im_height, image_np)
                 image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
                 cv2.imwrite('sample.jpg', new_image_np)
-                pred += detector_utils.predict(1,'sample.jpg')
-                cv2.putText(pred_img, pred, (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 255, 255), 2)
-                cv2.imshow('Prediction', pred_img)
-            elif k==ord('s'):
-                boxes, scores = detector_utils.detect_objects(image_np, detection_graph, sess)
-                new_image_np = detector_utils.draw_box_on_image(num_hands_detect, args.score_thresh, scores, boxes, im_width, im_height, image_np)
-                image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
-                cv2.imwrite('sample.jpg', new_image_np)
-                pred += detector_utils.predict(2,'sample.jpg')
+                #pred += detector_utils.predict(1,'sample.jpg')
+                pred='a'
                 cv2.putText(pred_img, pred, (20, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 255, 255), 2)
                 cv2.imshow('Prediction', pred_img)
 

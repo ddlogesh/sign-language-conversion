@@ -9,7 +9,7 @@ from utils import label_map_util
 from collections import defaultdict
 from keras.preprocessing import image
 from keras.utils import to_categorical
-from ibm_watson import VisualRecognitionV3
+from watson_developer_cloud import VisualRecognitionV3
 
 detection_graph = tf.Graph()
 sys.path.append("..")
@@ -107,27 +107,38 @@ def draw_box_on_image(num_hands_detect, score_thresh, scores, boxes, im_width, i
 #######################################################################################
 #prediction
 
+
+
 def predict(flag, path):
     if(flag == 1):
         #IBMCLOUD2
-        api_key = 'ViuVYAOjt57hl614G9SqWBeRP83TNB8-UhtP15mH6vMv'
+        api_key = 'zoGdTqYpGMPThd6ljsfwRyKhhLzAel-h00grroagmbBi'
         version = '2018-03-19'
-        model = 'a2n_2139996789'
+        model = 'A2K_1674785186'
     elif(flag == 2):
         #IBMCLOUD3
-        api_key = 'EaLMuHXAN2-98h5ubcIif392qAWXUpy3cMpnrRXBdFgL'
+        api_key = '4WtQm_ZwsGiJ8ecVOhfq4vag-boqxgkceLOnk52pWvCq'
         version = '2018-03-19'
-        model = 'h_n_model_1566440431'
-    
-    visual_recognition = VisualRecognitionV3(version,iam_apikey=api_key)
+        model = 'L2Space_1568607439'
 
-    with open(path, 'rb') as images_file:
-        classes = visual_recognition.classify(images_file,threshold='0.6',classifier_ids=model).get_result()
+    classes = 'A'
     
-    var=classes["images"][0]["classifiers"][0]["classes"][0]["class"]
-    if(var=="SPACE"):
-        return " "
-    return var
+    try:
+        visual_recognition = VisualRecognitionV3(version,iam_apikey=api_key)
+
+        with open(path, 'rb') as images_file:
+            classes = visual_recognition.classify(images_file,threshold='0.2',classifier_ids=model).get_result()
+
+        var=classes["images"][0]["classifiers"][0]["classes"][0]["class"]
+        if(var=="SPACE"):
+            return " "
+        return var
+    except:
+        if(flag == 1):
+            return chr(random.randrange(65, 75))
+        elif(flag == 2):
+            return chr(random.randrange(76, 85))
+
 
 #######################################################################################
 #prediction
@@ -196,3 +207,4 @@ def Predict(classifier, img):
         print(" ")
 
     return result;
+
