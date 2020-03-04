@@ -1,0 +1,31 @@
+
+
+
+Email-> need to ask Akhilesh
+Model-Dataset                 Classifier Id 
+L-space                      Ltospace_468858699
+A-K                          DefaultCustomModel_210221892
+
+apikey": "2KnT9ZMce-QUAcTfEpx0iYIGGfS6dGnSXEhVLLfC6C2I"
+
+
+
+
+harshavardhan98@yahoo.co.in 
+API key: zoGdTqYpGMPThd6ljsfwRyKhhLzAel-h00grroagmbBi
+ A-K    		A2K_1674785186
+
+
+
+ibmcloud101@gmail.com 
+API Key: 4WtQm_ZwsGiJ8ecVOhfq4vag-boqxgkceLOnk52pWvCq
+L-space: L2Space_1568607439
+
+
+Golhar2k18@gmail.com
+API key: gIl_hiT1TYwj9hefUsJVoAjpJizT4TJjZjYaGsarSGpD
+l2space: l2space_695102530
+
+
+
+
